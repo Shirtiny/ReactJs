@@ -17,7 +17,7 @@ class Counters extends Component {
       c.value = c.id;
       return c;
     });
-    console.log("重置", counters);
+    console.log("重置", this.state.counters, counters);
     this.setState({ counters });
   };
 
@@ -29,8 +29,12 @@ class Counters extends Component {
     //改变新的对象 而不直接改变this.state 由setState()来统一改变它
     counters[index] = { ...counter };
     counters[index].value++;
+    console.log("dom更新前", this.state.counters);
     //通知react状态更新
     this.setState({ counters });
+    setTimeout(() => {
+      console.log("延迟1秒，dom更新后", this.state.counters);
+    }, 1000);
   };
 
   //减少count
