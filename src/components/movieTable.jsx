@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 // import {getMovies as funcGetMovies} from "../services/fakeMovieService";
 import * as MovieService from "../services/fakeMovieService";
+import Heart from "./common/heart";
 
 class MovieTable extends Component {
   state = {
@@ -13,9 +14,18 @@ class MovieTable extends Component {
 
   //删除一个电影
   deleteOne = id => {
-    const deletedMovie = MovieService.deleteMovie(id);
-    console.log("删除了", deletedMovie);
-    this.setState({ movie: MovieService.getMovies() });
+    const movies = this.state.movies.filter(m => m._id !== id);
+    console.log("删除了", MovieService.getMovie(id));
+    this.setState({ movies });
+  };
+
+  //处理like按钮的点击
+  handleLikedClick = movie => {
+    const movies = [...this.state.movies];
+    const index = movies.indexOf(movie);
+    movies[index] = { ...movie };
+    movies[index].liked = !movies[index].liked;
+    this.setState({ movies });
   };
 
   render() {
@@ -37,6 +47,7 @@ class MovieTable extends Component {
               <th>股票</th>
               <th>排名</th>
               <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -46,6 +57,12 @@ class MovieTable extends Component {
                 <td>{movie.genre.name}</td>
                 <td>{movie.numberInStock}</td>
                 <td>{movie.dailyRentalRate}</td>
+                <td>
+                  <Heart
+                    liked={movie.liked}
+                    clickFunc={() => this.handleLikedClick(movie)}
+                  />
+                </td>
                 <td>
                   <button
                     className="btn-danger btn-sm"

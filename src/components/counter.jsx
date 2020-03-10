@@ -8,7 +8,7 @@ class Counter extends Component {
 
   render() {
     return (
-      <main className="container">
+      <div>
         <button
           className="btn btn-primary btn-sm"
           onClick={() => this.props.reduFunc(this.props.counter)}
@@ -25,7 +25,7 @@ class Counter extends Component {
         >
           增加
         </button>
-      </main>
+      </div>
     );
   }
 
