@@ -6,6 +6,7 @@ import MoviesTable from "./moviesTable";
 import Pagination from "./common/pagination";
 import paginate from "../utils/paginate";
 import GenresGroup from "./common/genresGroup";
+import _ from "lodash";
 
 class MoviesManager extends Component {
   state = {
@@ -14,7 +15,8 @@ class MoviesManager extends Component {
     pageSize: 4,
     currentPage: 1,
     genres: [],
-    selectedGenre: { _id: "0", name: "全部分类" }
+    selectedGenre: { _id: "0", name: "全部分类" },
+    sortColumn: { path: "title", order: "asc" }
   };
 
   //Mount钩子函数 在DOM渲染完成后调用
@@ -53,6 +55,12 @@ class MoviesManager extends Component {
     this.setState({ currentPage: 1, selectedGenre: genre });
   };
 
+  //改变列的排序规则
+  handleSortColumn = sortColumn => {
+    console.log("改变排序规则：", sortColumn);
+    this.setState({ sortColumn });
+  };
+
   render() {
     //无电影时 显示空
     if (this.state.movies.length <= 0) {
@@ -66,9 +74,15 @@ class MoviesManager extends Component {
         : this.state.movies.filter(
             m => m.genre._id === this.state.selectedGenre._id
           );
+    //进行排序
+    const sortedMovies = _.orderBy(
+      filteredMovies,
+      [this.state.sortColumn.path],
+      [this.state.sortColumn.order]
+    );
     //执行分页
     const paginatedMovies = paginate(
-      filteredMovies,
+      sortedMovies,
       this.state.currentPage,
       this.state.pageSize
     );
@@ -92,6 +106,8 @@ class MoviesManager extends Component {
               paginatedMovies={paginatedMovies}
               handleLikedClick={this.handleLikedClick}
               deleteOne={this.deleteOne}
+              sortColumn={this.state.sortColumn}
+              sortColumnFunc={this.handleSortColumn}
             />
             <Pagination
               totalCount={filteredMovies.length}
