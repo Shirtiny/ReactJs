@@ -2,10 +2,15 @@ import React, { Component } from "react";
 // import {getMovies as funcGetMovies} from "../services/fakeMovieService";
 import * as MovieService from "../services/fakeMovieService";
 import Heart from "./common/heart";
+import Pagination from "./common/pagination";
+import paginate from "../utils/paginate";
 
 class MovieTable extends Component {
   state = {
-    movies: MovieService.getMovies()
+    movies: MovieService.getMovies(),
+    totalCount: 9,
+    pageSize: 4,
+    currentPage: 1
   };
   //   constructor() {
   //     super();
@@ -28,12 +33,21 @@ class MovieTable extends Component {
     this.setState({ movies });
   };
 
+  //改变当前页
+  handleChangeCurrentPage = number => {
+    console.log("当前页为：", number);
+    this.setState({ currentPage: number });
+  };
+
   render() {
     //无电影时 显示空
     const moviesCount = this.state.movies.length;
     if (moviesCount <= 0) {
       return <h3>这里空空如也</h3>;
     }
+
+    //执行分页
+    const paginatedMovies = paginate(this.state.movies,this.state.currentPage,this.state.pageSize);
 
     //电影表格
     return (
@@ -51,7 +65,7 @@ class MovieTable extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.movies.map(movie => (
+            {paginatedMovies.map(movie => (
               <tr key={movie._id}>
                 <td>{movie.title}</td>
                 <td>{movie.genre.name}</td>
@@ -75,6 +89,10 @@ class MovieTable extends Component {
             ))}
           </tbody>
         </table>
+        <Pagination
+          {...this.state}
+          changeCurrentPageFunc={this.handleChangeCurrentPage}
+        />
       </div>
     );
   }
