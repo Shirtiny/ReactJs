@@ -61,12 +61,8 @@ class MoviesManager extends Component {
     this.setState({ sortColumn });
   };
 
-  render() {
-    //无电影时 显示空
-    if (this.state.movies.length <= 0) {
-      return <h3>这里空空如也</h3>;
-    }
-
+  //处理电影数组 进行过滤、排序、分页
+  getFinalData = () => {
     //进行筛选
     const filteredMovies =
       this.state.selectedGenre._id === "0"
@@ -74,6 +70,9 @@ class MoviesManager extends Component {
         : this.state.movies.filter(
             m => m.genre._id === this.state.selectedGenre._id
           );
+
+    //统计筛后结果的总数
+    const filteredDataCount = filteredMovies.length;
     //进行排序
     const sortedMovies = _.orderBy(
       filteredMovies,
@@ -86,6 +85,19 @@ class MoviesManager extends Component {
       this.state.currentPage,
       this.state.pageSize
     );
+    return { finalData: paginatedMovies, filteredDataCount: filteredDataCount };
+  };
+
+  render() {
+    //无电影时 显示空
+    if (this.state.movies.length <= 0) {
+      return <h3>这里空空如也</h3>;
+    }
+
+    const {
+      finalData: paginatedMovies,
+      filteredDataCount
+    } = this.getFinalData();
 
     //电影表格
     return (
@@ -102,7 +114,7 @@ class MoviesManager extends Component {
           </div>
           <div className="col">
             <MoviesTable
-              filteredMovies={filteredMovies}
+              filteredDataCount={filteredDataCount}
               paginatedMovies={paginatedMovies}
               handleLikedClick={this.handleLikedClick}
               deleteOne={this.deleteOne}
@@ -110,7 +122,7 @@ class MoviesManager extends Component {
               sortColumnFunc={this.handleSortColumn}
             />
             <Pagination
-              totalCount={filteredMovies.length}
+              totalCount={filteredDataCount}
               pageSize={this.state.pageSize}
               currentPage={this.state.currentPage}
               changeCurrentPageFunc={this.handleChangeCurrentPage}
