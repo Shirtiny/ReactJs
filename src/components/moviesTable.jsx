@@ -47,6 +47,8 @@ class MoviesTable extends Component {
           pathProperty="path"
           keyProperty="key"
           idProperty="_id"
+          linkPropertyPath="title"
+          linkUrl="/movie"
           funcProperty="elementFunc"
           sortColumn={sortColumn}
           sortColumnFunc={sortColumnFunc}

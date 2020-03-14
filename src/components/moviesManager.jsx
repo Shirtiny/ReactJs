@@ -101,7 +101,7 @@ class MoviesManager extends Component {
 
     //电影表格
     return (
-      <main className="container">
+      <React.Fragment>
         <div className="row">
           <div className="col-3">
             <GenresGroup
@@ -129,7 +129,7 @@ class MoviesManager extends Component {
             />
           </div>
         </div>
-      </main>
+      </React.Fragment>
     );
   }
 }

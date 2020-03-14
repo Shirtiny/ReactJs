@@ -10,10 +10,11 @@ const Table = props => {
     keyProperty,
     idProperty,
     funcProperty,
+    linkPropertyPath,
+    linkUrl,
     sortColumn,
     sortColumnFunc,
-    items,
-
+    items
   } = props;
 
   return (
@@ -34,6 +35,8 @@ const Table = props => {
         funcProperty={funcProperty}
         idProperty={idProperty}
         keyProperty={keyProperty}
+        linkPropertyPath={linkPropertyPath}
+        linkUrl={linkUrl}
       />
     </table>
   );
