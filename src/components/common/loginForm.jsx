@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Input from "./input";
 
 class LoginForm extends Component {
   state = {
@@ -20,7 +21,7 @@ class LoginForm extends Component {
   handleSubmit = event => {
     //阻止默认行为
     event.preventDefault();
-    console.log("阻止了提交行为");
+    console.log("阻止了提交行为", this.state.form);
   };
 
   handleInputChange = event => {
@@ -35,30 +36,20 @@ class LoginForm extends Component {
       <div>
         <h1>LoginForm</h1>
         <form onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="userNameInput">UserName</label>
-            <input
-              type="text"
-              className="form-control"
-              id="userNameInput"
-              ref={this.userNameRef}
-              autoFocus
-              value={this.state.form.username}
-              name="username"
-              onChange={this.handleInputChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="passwordInput">Password</label>
-            <input
-              type="text"
-              className="form-control"
-              id="passwordInput"
-              value={this.state.form.password}
-              name="password"
-              onChange={this.handleInputChange}
-            />
-          </div>
+          <Input
+            name="username"
+            value={this.state.form.username}
+            onChange={this.handleInputChange}
+            label="用户名"
+            type="text"
+          />
+          <Input
+            name="password"
+            value={this.state.form.password}
+            onChange={this.handleInputChange}
+            label="密码"
+            type="password"
+          />
           <button className="btn btn-primary">Login</button>
         </form>
       </div>
