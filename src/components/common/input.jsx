@@ -1,18 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const Input = ({ name, value, onChange, label, type, error }) => {
+//这里rest对象 表示将props里name、label、error以外的属性，装入名为rest的对象中
+const Input = ({ name, label, error, ...rest }) => {
   return (
     <div className="form-group">
       <label htmlFor={name}>{label}</label>
-      <input
-        type={type}
-        className="form-control"
-        id={name}
-        value={value}
-        name={name}
-        onChange={onChange}
-      />
+      <input className="form-control" id={name} name={name} {...rest} />
       {error && <small className="form-text text-muted">{error}</small>}
     </div>
   );
