@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Heart from "./common/heart";
 import Table from "./common/Table";
+import { Link } from "react-router-dom";
 
 class MoviesTable extends Component {
   //不在state中 不随生命周期变化
@@ -40,20 +41,27 @@ class MoviesTable extends Component {
     } = this.props;
     return (
       <React.Fragment>
-        <h3>共有{filteredDataCount}个电影</h3>
-        <Table
-          columns={this.columns}
-          labelProperty="label"
-          pathProperty="path"
-          keyProperty="key"
-          idProperty="_id"
-          linkPropertyPath="title"
-          linkUrl="/movie"
-          funcProperty="elementFunc"
-          sortColumn={sortColumn}
-          sortColumnFunc={sortColumnFunc}
-          items={paginatedMovies}
-        />
+        <div className="row" style={{ marginBottom: "20px" }}>
+          <Link to="/newMovie" className="btn btn-primary fa fa-plus"></Link>
+        </div>
+        <div className="row">
+          <p>共有{filteredDataCount}个电影</p>
+        </div>
+        <div className="row">
+          <Table
+            columns={this.columns}
+            labelProperty="label"
+            pathProperty="path"
+            keyProperty="key"
+            idProperty="_id"
+            linkPropertyPath="title"
+            linkUrl="/movie"
+            funcProperty="elementFunc"
+            sortColumn={sortColumn}
+            sortColumnFunc={sortColumnFunc}
+            items={paginatedMovies}
+          />
+        </div>
       </React.Fragment>
     );
   }

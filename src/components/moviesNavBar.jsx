@@ -5,9 +5,7 @@ class MoviesNavBar extends Component {
   state = {};
   render() {
     return (
-      <nav
-        className="navbar navbar-expand-lg navbar-light bg-light"
-      >
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <Link className="navbar-brand" to="/">
           MoviesApp
         </Link>
@@ -42,6 +40,11 @@ class MoviesNavBar extends Component {
             <li className="nav-item">
               <NavLink className="nav-link" to="/login">
                 Login
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/regist">
+                Register
               </NavLink>
             </li>
             <li className="nav-item">

@@ -1,17 +1,16 @@
 import React, { Component } from "react";
+import MovieForm from "./movieForm";
 
 class MovieDetails extends Component {
   handleClick = () => {
     this.props.history.push("/");
   };
   render() {
-    const { id } = this.props.match.params;
+    const { match } = this.props;
     return (
       <React.Fragment>
-        <h1>电影详情-{id}</h1>
-        <button className="btn btn-sm btn-primary" onClick={this.handleClick}>
-          保存
-        </button>
+        <h1>电影详情-{match.params.id}</h1>
+        <MovieForm {...this.props} />
       </React.Fragment>
     );
   }

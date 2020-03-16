@@ -8,10 +8,7 @@ class LoginForm extends Form {
       username: "",
       password: ""
     },
-    errors: {
-      username: "",
-      password: ""
-    }
+    errors: {}
   };
 
   //表单校验规则 使用Joi
