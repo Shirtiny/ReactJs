@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Heart from "./common/heart";
 import Table from "./common/Table";
 import { Link } from "react-router-dom";
+import Input from "./common/input";
 
 class MoviesTable extends Component {
   //不在state中 不随生命周期变化
@@ -37,8 +38,11 @@ class MoviesTable extends Component {
       filteredDataCount,
       paginatedMovies,
       sortColumn,
-      sortColumnFunc
+      sortColumnFunc,
+      handleSearchChange,
+      search
     } = this.props;
+
     return (
       <React.Fragment>
         <div className="row" style={{ marginBottom: "20px" }}>
@@ -46,6 +50,15 @@ class MoviesTable extends Component {
         </div>
         <div className="row">
           <p>共有{filteredDataCount}个电影</p>
+        </div>
+        <div className="row" style={{ width: 400 }}>
+          <Input
+            name={search}
+            value={search}
+            onChange={event => handleSearchChange(event.currentTarget.value)}
+            type="text"
+            placeholder="搜索..."
+          />
         </div>
         <div className="row">
           <Table

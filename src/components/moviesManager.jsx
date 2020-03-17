@@ -16,7 +16,8 @@ class MoviesManager extends Component {
     currentPage: 1,
     genres: [],
     selectedGenre: { _id: "0", name: "全部分类" },
-    sortColumn: { path: "title", order: "asc" }
+    sortColumn: { path: "title", order: "asc" },
+    search: ""
   };
 
   //Mount钩子函数 在DOM渲染完成后调用
@@ -33,6 +34,17 @@ class MoviesManager extends Component {
     const movies = this.state.movies.filter(m => m._id !== id);
     console.log("删除了", MovieService.getMovie(id));
     this.setState({ movies });
+  };
+
+  //处理搜索框值的改变
+  handleSearchChange = value => {
+    const search = value;
+    //更新search 并取消分类，和分页
+    this.setState({
+      search,
+      selectedGenre: { _id: "0", name: "全部分类" },
+      currentPage: 1
+    });
   };
 
   //处理like按钮的点击
@@ -63,28 +75,39 @@ class MoviesManager extends Component {
 
   //处理电影数组 进行过滤、排序、分页
   getFinalData = () => {
+    const {
+      search,
+      movies,
+      selectedGenre,
+      sortColumn,
+      currentPage,
+      pageSize
+    } = this.state;
+    //执行搜索
+    const searchedMovies = search
+      ? movies.filter(m => {
+          const titleLower = m.title.toLowerCase();
+          const searchLower = search.toLowerCase();
+          return titleLower.match(searchLower) !== null;
+        })
+      : movies;
+
     //进行筛选
     const filteredMovies =
-      this.state.selectedGenre._id === "0"
-        ? this.state.movies
-        : this.state.movies.filter(
-            m => m.genre._id === this.state.selectedGenre._id
-          );
+      selectedGenre._id === "0"
+        ? searchedMovies
+        : searchedMovies.filter(m => m.genre._id === selectedGenre._id);
 
     //统计筛后结果的总数
     const filteredDataCount = filteredMovies.length;
     //进行排序
     const sortedMovies = _.orderBy(
       filteredMovies,
-      [this.state.sortColumn.path],
-      [this.state.sortColumn.order]
+      [sortColumn.path],
+      [sortColumn.order]
     );
     //执行分页
-    const paginatedMovies = paginate(
-      sortedMovies,
-      this.state.currentPage,
-      this.state.pageSize
-    );
+    const paginatedMovies = paginate(sortedMovies, currentPage, pageSize);
     return { finalData: paginatedMovies, filteredDataCount: filteredDataCount };
   };
 
@@ -120,6 +143,8 @@ class MoviesManager extends Component {
               deleteOne={this.deleteOne}
               sortColumn={this.state.sortColumn}
               sortColumnFunc={this.handleSortColumn}
+              search={this.state.search}
+              handleSearchChange={this.handleSearchChange}
             />
             <Pagination
               totalCount={filteredDataCount}
