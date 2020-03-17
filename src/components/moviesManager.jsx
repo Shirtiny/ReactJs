@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 // import {getMovies as funcGetMovies} from "../services/fakeMovieService";
-import * as MovieService from "../services/fakeMovieService";
-import * as GenreService from "../services/fakeGenreService";
+import * as GenreService from "../services/genreService";
+import * as MovieService from "../services/movieService";
 import MoviesTable from "./moviesTable";
 import Pagination from "./common/pagination";
 import paginate from "../utils/paginate";
 import GenresGroup from "./common/genresGroup";
 import _ from "lodash";
+import { toast } from "react-toastify";
 
 class MoviesManager extends Component {
   state = {
@@ -21,18 +22,22 @@ class MoviesManager extends Component {
   };
 
   //Mount钩子函数 在DOM渲染完成后调用
-  componentDidMount() {
-    let genres = [{ _id: "0", name: "全部分类" }, ...GenreService.getGenres()];
+  async componentDidMount() {
+    let genres = await GenreService.getGenres();
+    genres = [{ _id: "0", name: "全部分类" }, ...genres];
+    const movies = await MovieService.getMovies();
     this.setState({
-      movies: MovieService.getMovies(),
+      movies,
       genres
     });
+    //使用toastyfi弹出提示框
+    toast(<h3>Wellcome !!</h3>);
   }
 
   //删除一个电影
   deleteOne = id => {
     const movies = this.state.movies.filter(m => m._id !== id);
-    console.log("删除了", MovieService.getMovie(id));
+    console.log("乐观删除了：", id,'明天再继续请求客户端');
     this.setState({ movies });
   };
 

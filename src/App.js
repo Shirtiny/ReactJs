@@ -11,12 +11,15 @@ import LoginForm from "./components/loginForm";
 import "./App.css";
 import RegisterForm from "./components/registerForm";
 import MovieForm from "./components/movieForm";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 class App extends Component {
   state = {};
   render() {
     return (
       <React.Fragment>
+        <ToastContainer />
         <MoviesNavbar />
         <main className="container">
           <Switch>
