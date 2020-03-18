@@ -1,8 +1,8 @@
 import React from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
-import * as GenreService from "../services/fakeGenreService";
-import * as MovieService from "../services/fakeMovieService";
+import * as GenreService from "../services/genreService";
+import * as MovieService from "../services/movieService";
 
 class MovieForm extends Form {
   state = {
@@ -36,8 +36,8 @@ class MovieForm extends Form {
       .label("评分")
   };
 
-  componentDidMount() {
-    const genres = GenreService.getGenres();
+  async componentDidMount() {
+    const genres = await GenreService.getGenres();
     //别忘了更新
     this.setState({ genres });
     console.log("初始化");
@@ -45,20 +45,23 @@ class MovieForm extends Form {
     //没收到id时
     if (!match.params.id) return;
     //在库中查找
-    const movieInDb = MovieService.getMovie(match.params.id);
-    //没找到 则转到404
-    if (!movieInDb) return history.replace("/404");
-    const form = this.mapMovieToViewModel(movieInDb);
-    //更新已有form
-    this.setState({ form });
+    try {
+      const movieInDb = await MovieService.getMovie(match.params.id);
+      const form = this.mapMovieToViewModel(movieInDb);
+      //更新已有form
+      this.setState({ form });
+    } catch (e) {
+      //没找到 则转到404
+      return history.replace("/404");
+    }
   }
 
-  doSubmit = () => {
-    console.log("submit movieForm", this.state.form);
+  doSubmit = async () => {
     const { form } = this.state;
     const movie = this.mapViewModelToMovie(form);
+    console.log("submit movie", movie);
     //保存电影
-    MovieService.saveMovie(movie);
+    await MovieService.saveMovie(movie);
     //返回列表页
     this.props.history.push("/moviesManager");
   };

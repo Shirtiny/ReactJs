@@ -35,10 +35,26 @@ class MoviesManager extends Component {
   }
 
   //删除一个电影
-  deleteOne = id => {
+  deleteOne = async id => {
+    const originalMovies = this.state.movies;
     const movies = this.state.movies.filter(m => m._id !== id);
-    console.log("乐观删除了：", id,'明天再继续请求客户端');
+    console.log("乐观删除了：", id);
     this.setState({ movies });
+    //请求服务器 真正的删除
+    try {
+      const deletedMovie = await MovieService.deleteMovie(id);
+      console.log("从服务器删除了：", deletedMovie);
+    } catch (e) {
+      //发生异常 表示没有删除成功
+      if (e.response && e.response.status === 404) {
+        //404 说明该项不存在 不用回滚
+        toast.info('该项不存在')
+      } else {
+        //其他错误 删除失败 回滚
+        this.setState({ movies: originalMovies });
+        console.log("删除失败，回滚");
+      }
+    }
   };
 
   //处理搜索框值的改变

@@ -8,6 +8,7 @@ import "bootstrap/dist/css/bootstrap.css";
 //引入font-awesome样式
 import "font-awesome/css/font-awesome.css";
 import { BrowserRouter } from "react-router-dom";
+import logger from "./services/logService";
 //引入计数器组件
 // import Counter from "./components/counter";
 //电影表
@@ -16,6 +17,8 @@ import { BrowserRouter } from "react-router-dom";
 // ReactDOM.render(element, document.getElementById("root"));
 // ReactDOM.render(<Counter />, document.getElementById("root"));
 // ReactDOM.render(<MoviesManager />, document.getElementById("root"));
+logger.init();
+
 ReactDOM.render(
   <BrowserRouter>
     <App />
