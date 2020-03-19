@@ -17,6 +17,8 @@ import logger from "./services/logService";
 // ReactDOM.render(element, document.getElementById("root"));
 // ReactDOM.render(<Counter />, document.getElementById("root"));
 // ReactDOM.render(<MoviesManager />, document.getElementById("root"));
+console.log(process.env);
+
 logger.init();
 
 ReactDOM.render(
